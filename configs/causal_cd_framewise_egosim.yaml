@@ -1,0 +1,47 @@
+generator_ckpt: /home/ma-user/work/users/zhengshikang/Causal-Forcing-2/checkpoints/egosim_stage1_framewise/checkpoint_model_001000/model.pt
+teacher_ckpt: /home/ma-user/work/users/zhengshikang/Causal-Forcing-2/checkpoints/egosim_stage1_framewise/checkpoint_model_001000/model.pt
+generator_fsdp_wrap_strategy: size
+real_score_fsdp_wrap_strategy: size
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true
+num_train_timestep: 1000
+timestep_shift: 5.0
+guidance_scale: 3.0
+mixed_precision: true
+seed: 0
+wandb_host: https://api.wandb.ai
+wandb_key: ${oc.env:WANDB_API_KEY,null}
+wandb_entity: 1229185024-amazon
+wandb_project: egosim-causal++-stage2
+sharding_strategy: hybrid_full
+lr: 2.0e-06
+beta1: 0.0
+beta2: 0.999
+batch_size: 1
+ema_weight: 0.99
+ema_start_step: 200
+log_iters: 100
+max_train_steps: 500
+negative_prompt: '色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走'
+image_or_video_shape:
+- 1
+- 21
+- 16
+- 60
+- 104
+trainer: consistency_distillation
+gradient_checkpointing: true
+num_frame_per_block: 1
+load_raw_video: false
+data_path: /home/ma-user/work/users/zhengshikang/datasets/luyitas/egosim_egodex_egovid/cache/train/egodex
+causal: true
+discrete_cd_N: 48
+
+model_type: egosim
+egosim_model_root: /home/ma-user/work/model/EgoSim-14B
+checkpoint_eval_enabled: true
+checkpoint_eval_lpips_torch_hub_dir: /home/ma-user/work/model/lpips

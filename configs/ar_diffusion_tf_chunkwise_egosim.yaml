@@ -1,0 +1,106 @@
+# Causal Forcing Stage 1 on EgoSim: autoregressive flow matching with
+# teacher forcing. EgoSim caches contain 16 latent frames, so a block size of
+# 4 keeps every sample and gives four causal chunks per video.
+generator_fsdp_wrap_strategy: size
+
+warp_denoising_step: true
+trainer: diffusion
+teacher_forcing: true
+num_frame_per_block: 4
+denoising_loss_type: flow
+gradient_checkpointing: true
+
+num_train_timestep: 1000
+timestep_shift: 5.0
+guidance_scale: 3.0
+mixed_precision: true
+seed: 0
+
+wandb_host: https://api.wandb.ai
+wandb_key: ${oc.env:WANDB_API_KEY,null}
+wandb_entity: 1229185024-amazon
+wandb_project: egosim-causal++-stage1-chunkwise
+sharding_strategy: hybrid_full
+
+lr: 2.0e-6
+beta1: 0.0
+beta2: 0.999
+weight_decay: 0.01
+batch_size: 1
+ema_weight: 0.99
+ema_start_step: 2000000000
+
+# Save and run checkpoint evaluation at steps 500 and 1000.
+log_iters: 500
+max_train_steps: 1000
+
+negative_prompt: "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走"
+image_or_video_shape:
+  - 1
+  - 16
+  - 16
+  - 60
+  - 104
+num_training_frames: 16
+
+load_raw_video: false
+model_type: egosim
+data_path: /home/ma-user/work/users/zhengshikang/datasets/luyitas/egosim_egodex_egovid/cache/train/egodex
+egosim_model_root: /home/ma-user/work/model/EgoSim-14B
+
+checkpoint_eval_enabled: true
+checkpoint_eval_lpips_torch_hub_dir: /home/ma-user/work/model/lpips
+checkpoint_eval_cfg_scale: 1.0
+checkpoint_eval_denoising_step_list:
+  - 1000
+  - 980
+  - 960
+  - 940
+  - 920
+  - 900
+  - 880
+  - 860
+  - 840
+  - 820
+  - 800
+  - 780
+  - 760
+  - 740
+  - 720
+  - 700
+  - 680
+  - 660
+  - 640
+  - 620
+  - 600
+  - 580
+  - 560
+  - 540
+  - 520
+  - 500
+  - 480
+  - 460
+  - 440
+  - 420
+  - 400
+  - 380
+  - 360
+  - 340
+  - 320
+  - 300
+  - 280
+  - 260
+  - 240
+  - 220
+  - 200
+  - 180
+  - 160
+  - 140
+  - 120
+  - 100
+  - 80
+  - 60
+  - 40
+  - 20
+
+# Keep the Stage 1 objective identical to vanilla Causal Forcing.

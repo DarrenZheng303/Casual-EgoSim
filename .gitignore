@@ -1,0 +1,12 @@
+__pycache__
+*.egg-info
+.cosmos3_deps/
+
+wan_models
+checkpoints
+output
+dataset
+prompts/vidprom_filtered_extended.txt
+logs
+temp
+.vscode
